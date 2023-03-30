@@ -1,201 +1,74 @@
-﻿namespace Task_24_03
+﻿namespace Rotate_a_matrix
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Personality trait application!");
-            //personality trait application
+            //int[,] matrix = {{5, 1, 9, 11},{2, 4, 8, 10},{13, 3, 6, 7},{15, 14, 12, 16} };
 
-            //general information
-            Console.WriteLine("Enter your Name: ");
-            string name = Console.ReadLine();
-            Console.WriteLine("Enter the date you are born: ");
+            int[,] matrix = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
 
-            string date = Console.ReadLine();
-            Console.WriteLine("Enter your month you were born : ");
-
-            string month = Console.ReadLine();
-            Console.WriteLine("Enter the year you were born: ");
-
-            string year = Console.ReadLine();   
-
-            string Dob = date + "/" + month +"/" + year;
-
-            //Be a mentalist
-
-            Console.WriteLine("Are you an Introvert: yes//no\n");
-            string isIntrovert = Console.ReadLine();
-            Console.WriteLine("Are you a happy inside: yes//no\n");
-            string isHappyInside = Console.ReadLine();
-            Console.WriteLine("Rate yourself on the basis of peacefulness: 1-10\n");
-            int peacefullnes = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Rate yourself on the basis of using social media: 1-10\n");
-            int useOfSocialMedia = Convert.ToInt32(Console.ReadLine());
-
-
-            if (isIntrovert == "yes" && isHappyInside == "yes")
+            int m = matrix.GetLength(0);
+            int n = matrix.GetLength(1);
+            Console.WriteLine($"Rows: {m} , Cols : {n}");
+            bool[,] visited = new bool[m,n];
+            for (int i = 0; i < m; i++)
             {
-                Console.WriteLine("You are a happy person with genuine feelings!");
-            }
-            else if (isIntrovert == "yes" && isHappyInside == "no")
-            {
-                Console.WriteLine("You are Broken,dont worry things will get right!");
-            }
-            else if(isHappyInside == "yes" && peacefullnes > 5)
-            {
-                Console.WriteLine("You are a peacefull and will always be happy!");
-            }else if(useOfSocialMedia >= 6)
-            {
-                Console.WriteLine("Do you honestly get value of it: yes//no\n");
-                string resp = Console.ReadLine();
-                if(resp == "yes" && peacefullnes > 5)
+
+                for (int j = 1; j < n; j++)
                 {
-                    Console.WriteLine("You are modern and with good self control!");
+                    if (!visited[i, j])
+                    {
+                        var t = matrix[i, j];
+                        matrix[i, j] = matrix[j, i];
+                        matrix[j, i] = t;
+                        visited[i, j] = true;
+                        visited[j, i] = true;
+                    }
                 }
+                int start = 0;
+                int end = n - 1;
+                while(start < end)
+                {
+                    
+                    var tmp = matrix[i, start];
+                    matrix[i, start] = matrix[i, end];
+                    matrix[i,end] = tmp;
+
+                    start++; 
+                    end-- ;
+                }
+                 Console.WriteLine();
             }
 
-            //Mimic Ptolemy
-
-            //Console.WriteLine("Lets find your Partner:\n");
-
-            Console.WriteLine( $"Your zodiac sign : {zodiac_sign(12, month)}");
-
-
-
-            //calendar man
-            Console.WriteLine(CalculateAge(Convert.ToDateTime(Dob)));
+            for(int i=0; i<m ; i++)
+            {
+                for(int j = 0; j < n; j++)
+                {
+                    Console.Write(matrix[i,j] + " ");
+                }
+                Console.WriteLine();
+            }
             
-        }
-        static string CalculateAge(DateTime Dob)
-        {
-            DateTime Now = DateTime.Now;
-            int Years = new DateTime(DateTime.Now.Subtract(Dob).Ticks).Year - 1;
-            //Console.WriteLine("Years.." + Years);
-            DateTime PastYearDate = Dob.AddYears(Years);
+
+
+
            
-
-            int Months = 0;
-            for (int i = 1; i <= 12; i++)
-            {
-                if (PastYearDate.AddMonths(i) == Now)
-                {
-                    Months = i;
-                    break;
-                }
-                else if (PastYearDate.AddMonths(i) >= Now)
-                {
-                    Months = i - 1;
-                    break;
-                }
-            }
             
-            
-            return $"Your current Age is : {Convert.ToString(Years)} years {Convert.ToString(Months)} months";
-        }
-
-        static string zodiac_sign(int day, string month)
-        {
-            string astro_sign = "";
-
-            
-            if (month == "12")
-            {
-
-                if (day < 22)
-                    astro_sign = "Sagittarius";
-                else
-                    astro_sign = "capricorn";
-            }
-
-            else if (month == "1")
-            {
-                if (day < 20)
-                    astro_sign = "Capricorn";
-                else
-                    astro_sign = "aquarius";
-            }
-
-            else if (month == "2")
-            {
-                if (day < 19)
-                    astro_sign = "Aquarius";
-                else
-                    astro_sign = "pisces";
-            }
-
-            else if (month == "3")
-            {
-                if (day < 21)
-                    astro_sign = "Pisces";
-                else
-                    astro_sign = "aries";
-            }
-            else if (month == "4")
-            {
-                if (day < 20)
-                    astro_sign = "Aries";
-                else
-                    astro_sign = "taurus";
-            }
-
-            else if (month == "5")
-            {
-                if (day < 21)
-                    astro_sign = "Taurus";
-                else
-                    astro_sign = "gemini";
-            }
-
-            else if (month == "6")
-            {
-                if (day < 21)
-                    astro_sign = "Gemini";
-                else
-                    astro_sign = "cancer";
-            }
-
-            else if (month == "7")
-            {
-                if (day < 23)
-                    astro_sign = "Cancer";
-                else
-                    astro_sign = "leo";
-            }
-
-            else if (month == "8")
-            {
-                if (day < 23)
-                    astro_sign = "Leo";
-                else
-                    astro_sign = "virgo";
-            }
-
-            else if (month == "9")
-            {
-                if (day < 23)
-                    astro_sign = "Virgo";
-                else
-                    astro_sign = "libra";
-            }
-
-            else if (month == "10")
-            {
-                if (day < 23)
-                    astro_sign = "Libra";
-                else
-                    astro_sign = "scorpio";
-            }
-
-            else if (month == "11")
-            {
-                if (day < 22)
-                    astro_sign = "scorpio";
-                else
-                    astro_sign = "sagittarius";
-            }
-
-            return astro_sign;
         }
     }
 }
+
+//int[,] res = new int[rows,cols];
+
+
+//for(int r  = 0; r < rows;r++)
+//{
+
+//    for(int c = cols-1;c >=0; c--)
+//    {
+//        res[r,c] = matrix[c,r];
+//        Console.Write(matrix[c,r] + " ");
+//    }
+//    Console.WriteLine();
+//}
