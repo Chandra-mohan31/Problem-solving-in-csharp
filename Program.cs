@@ -1,56 +1,60 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Diagnostics;
 
-namespace Spiral_matrix
+namespace SellStock
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Spiral Matrix!");
-            int[,] arr = {{ 1, 2, 3, 4},{5, 6, 7, 8},{9, 10, 11, 12} };
-            int m = arr.GetLength(0);
-            int n = arr.GetLength(1);
-            Console.WriteLine(m + "," + n);
-            int l = 0;
-            int r = n - 1;
-            int t = 0;
-            int b = m - 1;
-            int d = 0;
+            Console.WriteLine("Stocks Problem");
+            //int[] stocks = { 7 ,1, 5, 3, 6, 4 };
+            int[] stocks =  { 1,2,4,2,5,7,2,4,9,0,9};
 
-            while(l <= r && t<= b)
+            Console.WriteLine("The maximum profit you can make is : " + CalcProfitOptimised(stocks));
+            //Console.Write(CalcProfitOptimised(stocks));
+
+
+        }
+        static int CalcProfit(int[] stocks)
+        {
+            int max_profit = 0;
+            
+            for (int i = 0; i < stocks.Length - 1; i++)
             {
-                if (d == 0)
+                for (int j = i + 1; j < stocks.Length; j++)
                 {
-                    for (int i = l; i <= r; i++)
+                    if (stocks[j] > stocks[i])
                     {
-                        Console.Write($"{arr[t,i]} ");
+                        max_profit = Math.Max((stocks[j] - stocks[i]), max_profit);
                     }
-                    d = 1; t++;
-                }else if (d == 1)
+                }
+            }
+            return max_profit;
+        }
+        //int[] stocks = { 7, 1, 5, 3, 6, 4 };
+
+        static int CalcProfitOptimised(int[] stocks)
+        {
+            int max_profit = 0;
+            int curr_buy_day = 0;
+            int curr_sell_day = 1;
+            
+            while(curr_sell_day < stocks.Length && curr_buy_day < stocks.Length) {
+                if (stocks[curr_sell_day] - stocks[curr_buy_day] > 0)
                 {
-                    for (int i = t; i <= b; i++)
-                    {
-                        Console.Write($"{arr[i,r]} ");
-                    }
-                    d = 2; r--;
-                }else if(d == 2)
+                    max_profit = Math.Max((stocks[curr_sell_day] - stocks[curr_buy_day]), max_profit);
+                    curr_sell_day++;
+                }
+                else
                 {
-                    for (int i = r; i >= l; i--)
-                    {
-                        Console.Write($"{arr[b,i]} ");
-                    }
-                    d = 3; b--;
-                }else if(d == 3)
-                {
-                    for (int i = b; i >= t; i--)
-                    {
-                        Console.Write($"{arr[i,l]} ");
-                    }
-                    d = 0; l++;
+                    curr_buy_day=curr_sell_day;
+                    curr_sell_day++;
                 }
             }
 
+            return max_profit;
+
+            
         }
     }
 }
